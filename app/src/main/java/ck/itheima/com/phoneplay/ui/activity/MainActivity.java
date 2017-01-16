@@ -1,5 +1,4 @@
 package ck.itheima.com.phoneplay.ui.activity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -8,10 +7,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
-
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ck.itheima.com.phoneplay.R;
@@ -26,7 +23,8 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.bottomBar)
     BottomBar   mBottomBar;
     private FragmentManager mSupportFragmentManager;
-//
+
+
     @Override
     public int getLayoutID() {
         return R.layout.activity_main;
@@ -37,6 +35,7 @@ public class MainActivity extends BaseActivity {
         super.init();
 
         mSupportFragmentManager = getSupportFragmentManager();
+
 
         mBottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override

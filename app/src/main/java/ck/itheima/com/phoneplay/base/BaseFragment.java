@@ -29,7 +29,7 @@ public abstract class BaseFragment extends Fragment {
         return view;
     }
 
-    private void init() {
+    protected void init() {
     }
 
     public abstract int getLayoutID();
