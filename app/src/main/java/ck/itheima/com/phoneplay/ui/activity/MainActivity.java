@@ -26,7 +26,7 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.bottomBar)
     BottomBar   mBottomBar;
     private FragmentManager mSupportFragmentManager;
-
+//
     @Override
     public int getLayoutID() {
         return R.layout.activity_main;
