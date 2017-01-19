@@ -31,8 +31,12 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     //添加这一句 } ``
     compile 'com.roughike:bottom-bar:2.0.2'
-    //    compile 'com.github.uncleleonfan:funhttp:1.0'
+    compile 'com.github.uncleleonfan:funhttp:1.0'
     compile 'com.squareup.okhttp3:okhttp:3.5.0'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.squareup.picasso:picasso:2.3.2'
+    //picasso 圆形等
+    compile 'jp.wasabeef:picasso-transformations:2.1.0'
+
+
 }

@@ -1,7 +1,12 @@
 package ck.itheima.com.phoneplay.ui.fragment;
 
-import ck.itheima.com.phoneplay.R;
-import ck.itheima.com.phoneplay.base.BaseFragment;
+import android.support.v7.widget.RecyclerView;
+
+import ck.itheima.com.phoneplay.adapter.YueDanAdapter;
+import ck.itheima.com.phoneplay.base.BaseListFragment;
+import ck.itheima.com.phoneplay.presenter.BaseListPresenter;
+import ck.itheima.com.phoneplay.presenter.impl.YueDanPersenterImpl;
+import ck.itheima.com.phoneplay.view.BaseListView;
 
 /**
  * 类名:    HomeFragment
@@ -12,9 +17,18 @@ import ck.itheima.com.phoneplay.base.BaseFragment;
  * 描述:    TODO
  */
 
-public class YueDanFragment extends BaseFragment {
+public class YueDanFragment extends BaseListFragment {
+
+    private BaseListPresenter mBaseListPresenter;
+
     @Override
-    public int getLayoutID() {
-        return R.layout.fragment_yuedan;
+    public BaseListPresenter getPresenter(BaseListView baseListView) {
+        mBaseListPresenter = new YueDanPersenterImpl(baseListView);
+        return mBaseListPresenter;
+    }
+
+    @Override
+    public RecyclerView.Adapter getAdapter() {
+        return new YueDanAdapter(mBaseListPresenter.getListData(),getContext());
     }
 }

@@ -1,24 +1,18 @@
 package ck.itheima.com.phoneplay.presenter.impl;
 
 import android.os.Handler;
-import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.itheima.leon.funhttplib.NetworkListener;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import ck.itheima.com.phoneplay.beans.HomeListItemBean;
-import ck.itheima.com.phoneplay.presenter.HomePresenter;
+import ck.itheima.com.phoneplay.network.HomeRequest;
+import ck.itheima.com.phoneplay.presenter.BaseListPresenter;
 import ck.itheima.com.phoneplay.utils.URLProviderUtil;
-import ck.itheima.com.phoneplay.view.HomeView;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import ck.itheima.com.phoneplay.view.BaseListView;
 
 /**
  * 类名:    HomePersenterImpl
@@ -29,14 +23,14 @@ import okhttp3.Response;
  * 描述:    homePresenter接口的实现类
  */
 
-public class HomePersenterImpl implements HomePresenter {
+public class HomePersenterImpl implements BaseListPresenter {
     public  List<HomeListItemBean> mlist;
     private Gson                   mGson;
-    private Handler mHandler;
-    private HomeView mHomeView;
+    private Handler                mHandler;
+    private BaseListView           mHomeView;
 
-    public HomePersenterImpl(HomeView homeView) {
-        mHomeView = homeView;
+    public HomePersenterImpl(BaseListView homeView) {
+        mHomeView =  homeView;
         mlist = new ArrayList<>();
         mGson = new Gson();
         mHandler = new Handler();
@@ -62,43 +56,28 @@ public class HomePersenterImpl implements HomePresenter {
     public List<HomeListItemBean> getListData() {
         return mlist;
     }
-
+/*----------------------------数据加载------------------------------*/
     private void loadDataList(int offset) {
         String url = URLProviderUtil.getHomeUrl(offset, 10);
-        OkHttpClient okHttpClient = new OkHttpClient();
-        final Request request = new Request.Builder().get().url(url).build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String result = response.body().string();
-                Log.d("HomeFragment", result);
-                //item的集合
-                List<HomeListItemBean> listItemBeanList = mGson.fromJson(result, new
-                        TypeToken<List<HomeListItemBean>>() {
-                        }.getType());
-
-                mlist.addAll(listItemBeanList);
-
-//                for (int i = 0; i <listItemBeanList.size() ; i++) {
-//                    Log.d("HomeFragment", listItemBeanList.get(i).title);
-//                }
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-//                        mHomeListAdapter.notifyDataSetChanged();
-//                        mSwipeHome.setRefreshing(false);//隐藏进度圈
-                        mHomeView.onDataloadedSuccess();
-                    }
-                });
-
-            }
-        });
+        new HomeRequest(url, mListNetworkListener).execute();
     }
 
+    private NetworkListener<List<HomeListItemBean>> mListNetworkListener = new
+            NetworkListener<List<HomeListItemBean>>() {
+
+
+        @Override
+        public void onFailed(String s) {
+
+        }
+
+        @Override
+        public void onSuccess(List<HomeListItemBean> homeListItemBeen) {
+            mlist.addAll(homeListItemBeen);
+            //刷新界面和隐藏进度圈
+            mHomeView.onDataloadedSuccess();
+
+        }
+    };
 
 }
